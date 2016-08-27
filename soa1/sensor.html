@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://www.raspberrypi.org/favicon.ico">
+
+    <title>Raspberry Pi 3</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="bootstrap/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="bootstrap/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+<script type = "text/javascript" >
+window.onload = function () {
+	var dps = [];
+	var xVal = 0;
+	var chart = new CanvasJS.Chart("chartContainer", {
+			title : {
+				text : "Historial de Temperatura"
+			},
+			data : [{
+					type : "line",
+					dataPoints : dps
+				}
+			]
+		});
+
+	chart.render();
+
+var sFunc = function () {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+        var res = xhttp.responseText;
+        var vals = res.split("-");
+        xVal++;
+	document.getElementById("tempData").innerHTML = vals[0]+" &#8451;";
+        document.getElementById("humData").innerHTML = vals[1]+ " %";
+        dps.push( { x: xVal, y : parseInt(vals[0]) } );
+        chart.options.title.text = "Historial de Temperatura";
+        chart.render();
+    }
+  };
+  xhttp.open("GET", "data.php", true);
+  xhttp.send();
+};
+
+	
+
+	// update chart every second
+	setInterval(sFunc, 10000);
+}	
+</script>
+
+<script type="text/javascript" src="canvasjs.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Laboratorio 1</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="sensor.html">Inicio</a></li>
+                  <li><a href="nosotros.html">Nosotros</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Temperatura / Humedad</h1>
+            
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 block">
+            <div class="circle">
+                <p id="tempData" style="font-size:55px; color:red">-- &#8451;</p>
+            </div>
+        </div>
+        <div class="col-md-3 block">
+            <div class="circle">
+                <p id="humData" style="font-size:55px; color:blue"> -- %</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+          </div>
+
+<div id="chartContainer" style="height: 150px; width: 100%;"></div>
+          <div class="mastfoot">
+            <div class="inner">
+		<p>Fuentes y documentos disponibles en <a href="https://github.com/jeslev/soa2016/blob/master/soa1"> Github</a> .</p>
+              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="bootstrap/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="bootstrap/assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
